@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -42,32 +43,25 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyRow(modifier = Modifier.fillMaxSize()
+                .background(Color.Gray)
+            ) {
+
                 itemsIndexed(
                     listOf(
-                        "Qaz",
-                        "Item",
-                        "Moro",
-                        "Ailends",
-                        "Krisna",
-                        "Pol",
-                        "keks",
-                        "Boroda",
-                        "stop",
-                        "aids",
-                        "skots",
-                        "terier",
-                        "noname",
-                        "1111",
-                        "plak",
-                        "17.05.2024"
+                        DataItem(R.drawable.islands, "OLOLO"),
+                        DataItem(R.drawable.islands, "qaz"),
+                        DataItem(R.drawable.islands, "OPOPO"),
+                        DataItem(R.drawable.islands, "Image"),
+                        DataItem(R.drawable.islands, "Zlo"),
+                        DataItem(R.drawable.islands, "1111"),
+                        DataItem(R.drawable.islands, "2222"),
+                        DataItem(R.drawable.islands, "3333"),
+                        DataItem(R.drawable.islands, "4444"),
+                        DataItem(R.drawable.islands, "5555"),
                     )
                 ) { index, item ->
-                    Text(
-                        text = item,
-                        fontSize = 30.sp,
-                        modifier = Modifier.padding(vertical = 10.dp)
-                    )
+                    ViewItem(item = item)
                 }
             }
         }
