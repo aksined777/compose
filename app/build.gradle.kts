@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.coil)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.volley)
     implementation(libs.androidx.lifecycle.runtime.ktx)

@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.myapplication.screen.MainScreen
 import org.json.JSONObject
 
 class MainActivity : ComponentActivity() {
@@ -33,62 +34,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            Greetting("Moscow", this)
+            MainScreen()
         }
     }
 
-}
-
-@Composable
-fun Greetting(name: String, context: Context) {
-    var state = remember {
-        mutableStateOf("Unknown")
-    }
-    Column(modifier = Modifier.fillMaxSize()) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(text = "Temp is ${name} = ${state.value}")
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .background(Color.Cyan),
-
-            contentAlignment = Alignment.BottomCenter
-        ) {
-            Button(
-                onClick = {
-                    getResult(name, context, state)
-                },
-                modifier = Modifier
-                    .padding(5.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(text = "Refresh")
-            }
-        }
-    }
-}
-
-val API_KEY = "aa05fd44130742cf8b3181636241905"
-
-private fun getResult(name: String, context: Context, state: MutableState<String>) {
-    val url = "https://api.weatherapi.com/v1/current.json" +
-            "?key=$API_KEY&" +
-            "q=$name" +
-            "&aqi=no"
-    val queue = Volley.newRequestQueue(context)
-    val stringRequest = StringRequest(Request.Method.GET,
-        url,
-        { responce ->
-            val obj = JSONObject(responce)
-
-            state.value = obj.getJSONObject("current").getString("temp_c") },
-        { error -> state.value = error.message.toString()})
-    queue.add(stringRequest)
 }
