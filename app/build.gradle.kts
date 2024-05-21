@@ -48,6 +48,8 @@ android {
 
 dependencies {
     implementation(libs.androidx.coil)
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicator)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.volley)
     implementation(libs.androidx.lifecycle.runtime.ktx)
