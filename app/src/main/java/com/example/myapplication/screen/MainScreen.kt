@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -159,8 +161,8 @@ fun TabLayout() {
             indicator = { pos ->
                 TabRowDefaults.Indicator(modifier = Modifier.tabIndicatorOffset(pos.get(tabIndex)))
             },
-            containerColor = Color.Green,
-            contentColor = ColorOLOLO,
+            containerColor = Cyan100,
+            contentColor = Color.White,
         ) {
             items.forEachIndexed() { index, item ->
                 Tab(
@@ -179,8 +181,14 @@ fun TabLayout() {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.weight(1.0f)
-        ) {
-
+        ) { index ->
+            if (index == 1) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(15) {
+                        ItemView()
+                    }
+                }
+            }
         }
     }
 }
