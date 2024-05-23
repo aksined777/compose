@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myapplication.R
+import com.example.myapplication.data.WeatherModel
 import com.example.myapplication.ui.theme.ColorOLOLO
 import com.example.myapplication.ui.theme.Cyan100
 import kotlinx.coroutines.launch
@@ -184,8 +186,31 @@ fun TabLayout() {
         ) { index ->
             if (index == 1) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    items(15) {
-                        ItemView()
+                    itemsIndexed(
+                        listOf(
+                            WeatherModel(
+                                city = "London",
+                                time = "10:00",
+                                currentTemp = "-5",
+                                condition = "Sunny",
+                                icon = "//cdn.weatherapi.com/weather/64x64/day/176.png",
+                                maxTemp = "",
+                                minTemp = "",
+                                hours = ""
+                            ),
+                            WeatherModel(
+                                city = "Paris",
+                                time = "11/06/2022",
+                                currentTemp = "",
+                                condition = "Sunny",
+                                icon = "//cdn.weatherapi.com/weather/64x64/day/176.png",
+                                maxTemp = "31",
+                                minTemp = "45",
+                                hours = "hours?"
+                            )
+                        )
+                    ) { _, item ->
+                        ItemView(item = item)
                     }
                 }
             }

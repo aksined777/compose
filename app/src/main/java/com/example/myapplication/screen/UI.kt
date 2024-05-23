@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.myapplication.data.WeatherModel
 import com.example.myapplication.ui.theme.Cyan100
 
 
-@Preview(showBackground = true)
 @Composable
-fun ItemView() {
+fun ItemView(item: WeatherModel) {
     Card(
         modifier = androidx.compose.ui.Modifier
             .fillMaxWidth()
@@ -44,12 +44,12 @@ fun ItemView() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.padding(start = 8.dp, top = 5.dp, bottom = 5.dp)) {
-                Text(text = "12:00")
-                Text(text = "Sunny", color = Color.White)
+                Text(text = item.time)
+                Text(text = item.condition, color = Color.White)
             }
-            Text(text = "25 C", color = Color.White, style = TextStyle(fontSize = 25.sp))
+            Text(text = item.currentTemp.ifEmpty { "${item.maxTemp}/${item.minTemp}" }, color = Color.White, style = TextStyle(fontSize = 25.sp))
             AsyncImage(
-                model = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
+                model = "https:${item.icon}",
                 contentDescription = "im5",
                 modifier = Modifier.size(35.dp)
             ) // coil library
