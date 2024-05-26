@@ -24,6 +24,7 @@ import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -140,9 +141,8 @@ fun MainCard() {
 
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview(showBackground = true)
 @Composable
-fun TabLayout() {
+fun TabLayout(dayList: MutableState<List<WeatherModel>>) {
     val items = listOf("HOURSE", "DAYS")
     val pagerState = rememberPagerState(
         initialPage = 1,
@@ -184,36 +184,14 @@ fun TabLayout() {
             state = pagerState,
             modifier = Modifier.weight(1.0f)
         ) { index ->
-            if (index == 1) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    itemsIndexed(
-                        listOf(
-                            WeatherModel(
-                                city = "London",
-                                time = "10:00",
-                                currentTemp = "-5",
-                                condition = "Sunny",
-                                icon = "//cdn.weatherapi.com/weather/64x64/day/176.png",
-                                maxTemp = "",
-                                minTemp = "",
-                                hours = ""
-                            ),
-                            WeatherModel(
-                                city = "Paris",
-                                time = "11/06/2022",
-                                currentTemp = "",
-                                condition = "Sunny",
-                                icon = "//cdn.weatherapi.com/weather/64x64/day/176.png",
-                                maxTemp = "31",
-                                minTemp = "45",
-                                hours = "hours?"
-                            )
-                        )
-                    ) { _, item ->
-                        ItemView(item = item)
-                    }
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                itemsIndexed(
+                    dayList.value
+                ) { _, item ->
+                    ItemView(item = item)
                 }
             }
+
         }
     }
 }
