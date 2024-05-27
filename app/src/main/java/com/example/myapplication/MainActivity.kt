@@ -31,7 +31,18 @@ class MainActivity : ComponentActivity() {
             val daysList = remember {
                 mutableStateOf(listOf<WeatherModel>())
             }
-            getData("London", this, daysList)
+
+            val currentDay = remember {
+                mutableStateOf(WeatherModel("",
+                    "",
+                    "0.0",
+                    "",
+                    "",
+                    "0.0",
+                    "0.0",
+                    ""))
+            }
+            getData("London", this, daysList, currentDay)
             Image(
                 painter = painterResource(id = R.drawable.mks),
                 contentDescription = "im1",
@@ -41,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 contentScale = ContentScale.FillBounds
             )
             Column {
-                MainCard()
+                MainCard(currentDay)
                 TabLayout(daysList)
             }
         }
@@ -49,12 +60,17 @@ class MainActivity : ComponentActivity() {
 }
 
 
-private fun getData(name: String, context: Context, state: MutableState<List<WeatherModel>>) {
+private fun getData(
+    name: String,
+    context: Context,
+    state: MutableState<List<WeatherModel>>,
+    currentDay: MutableState<WeatherModel>
+) {
     val API_KEY = "aa05fd44130742cf8b3181636241905"
     val url = "https://api.weatherapi.com/v1/forecast.json" +
             "?key=$API_KEY&" +
             "&q=$name" +
-            "&days=3"+
+            "&days=3" +
             "&aqi=no&alerts=yes"
     val queue = Volley.newRequestQueue(context)
     val stringRequest = StringRequest(
@@ -62,7 +78,7 @@ private fun getData(name: String, context: Context, state: MutableState<List<Wea
         url,
         { responce ->
             val list = getWeatherByDay(responce)
-
+            currentDay.value = list[0]
             state.value = list
         },
         {
@@ -84,7 +100,7 @@ private fun getWeatherByDay(responce: String): List<WeatherModel> {
                 city = city,
                 time = item.getString("date"),
                 currentTemp = "",
-                condition =  item.getJSONObject("day").getJSONObject("condition").getString("text"),
+                condition = item.getJSONObject("day").getJSONObject("condition").getString("text"),
                 icon = item.getJSONObject("day").getJSONObject("condition").getString("icon"),
                 minTemp = item.getJSONObject("day").getString("mintemp_c"),
                 maxTemp = item.getJSONObject("day").getString("maxtemp_c"),

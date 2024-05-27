@@ -43,9 +43,8 @@ import com.example.myapplication.ui.theme.ColorOLOLO
 import com.example.myapplication.ui.theme.Cyan100
 import kotlinx.coroutines.launch
 
-@Preview(showBackground = true)
 @Composable
-fun MainCard() {
+fun MainCard(currentDay: MutableState<WeatherModel>) {
 
     Column(
         modifier = Modifier
@@ -78,32 +77,32 @@ fun MainCard() {
                     ) {
                         Text(
                             modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                            text = "20 Jun",
+                            text = currentDay.value.time,
                             style = TextStyle(fontSize = 15.sp),
                             color = Color.White
                         )
 
                         AsyncImage(
-                            model = "https://cdn.weatherapi.com/weather/64x64/day/116.png",
+                            model = "https:" + currentDay.value.icon,
                             contentDescription = "im2",
                             modifier = Modifier.size(35.dp)
                         ) // coil library
                     }
                     Text(
                         modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                        text = "Oslo",
+                        text = currentDay.value.city,
                         style = TextStyle(fontSize = 24.sp),
                         color = Color.White
                     )
                     Text(
                         modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                        text = "25 C",
+                        text = currentDay.value.currentTemp,
                         style = TextStyle(fontSize = 45.sp),
                         color = Color.White
                     )
                     Text(
                         modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                        text = "Sunny",
+                        text = currentDay.value.condition,
                         style = TextStyle(fontSize = 16.sp),
                         color = Color.White
                     )
@@ -120,7 +119,7 @@ fun MainCard() {
                         }
                         Text(
                             modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                            text = "23 C/12 C",
+                            text = "${currentDay.value.maxTemp.toFloat().toInt()} C/${currentDay.value.minTemp.toFloat().toInt()} C",
                             style = TextStyle(fontSize = 16.sp),
                             color = Color.White
                         )
