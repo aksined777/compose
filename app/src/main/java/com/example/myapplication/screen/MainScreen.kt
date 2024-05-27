@@ -5,12 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,15 +30,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.myapplication.R
 import com.example.myapplication.data.WeatherModel
-import com.example.myapplication.ui.theme.ColorOLOLO
 import com.example.myapplication.ui.theme.Cyan100
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 
 @Composable
 fun MainCard(currentDay: MutableState<WeatherModel>) {
@@ -96,7 +93,7 @@ fun MainCard(currentDay: MutableState<WeatherModel>) {
                     )
                     Text(
                         modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                        text = currentDay.value.currentTemp,
+                        text = currentDay.value.currentTemp.ifEmpty { "${currentDay.value.maxTemp} C/ ${currentDay.value.minTemp}" },
                         style = TextStyle(fontSize = 45.sp),
                         color = Color.White
                     )
@@ -119,7 +116,9 @@ fun MainCard(currentDay: MutableState<WeatherModel>) {
                         }
                         Text(
                             modifier = Modifier.padding(PaddingValues(10.dp, 10.dp, 0.dp, 0.dp)),
-                            text = "${currentDay.value.maxTemp.toFloat().toInt()} C/${currentDay.value.minTemp.toFloat().toInt()} C",
+                            text = "${
+                                currentDay.value.maxTemp.toFloat().toInt()
+                            } C/${currentDay.value.minTemp.toFloat().toInt()} C",
                             style = TextStyle(fontSize = 16.sp),
                             color = Color.White
                         )
@@ -141,7 +140,7 @@ fun MainCard(currentDay: MutableState<WeatherModel>) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TabLayout(dayList: MutableState<List<WeatherModel>>) {
+fun TabLayout(dayList: MutableState<List<WeatherModel>>, currentDay: MutableState<WeatherModel>) {
     val items = listOf("HOURSE", "DAYS")
     val pagerState = rememberPagerState(
         initialPage = 1,
@@ -183,14 +182,35 @@ fun TabLayout(dayList: MutableState<List<WeatherModel>>) {
             state = pagerState,
             modifier = Modifier.weight(1.0f)
         ) { index ->
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                itemsIndexed(
-                    dayList.value
-                ) { _, item ->
-                    ItemView(item = item)
-                }
+            val list = when (index) {
+                0 -> getWeatherByHours(currentDay.value.hours)
+                1 -> dayList.value
+                else -> dayList.value
             }
-
+            MainList(list, currentDay)
         }
     }
+}
+
+private fun getWeatherByHours(hour: String): List<WeatherModel> {
+    if (hour.isEmpty()) return listOf()
+    val jsonArray = JSONArray(hour)
+    val list = ArrayList<WeatherModel>()
+    for (i in 0 until jsonArray.length()) {
+        val item = jsonArray[i] as JSONObject
+        list.add(
+            WeatherModel(
+                city = "",
+                time = item.getString("time"),
+                currentTemp = item.getString("temp_c"),
+                condition = item.getJSONObject("condition").getString("text"),
+                icon = item.getJSONObject("condition").getString("icon"),
+                minTemp = "",
+                maxTemp = "",
+                hours = ""
+            )
+        )
+    }
+
+    return list
 }

@@ -33,16 +33,20 @@ class MainActivity : ComponentActivity() {
             }
 
             val currentDay = remember {
-                mutableStateOf(WeatherModel("",
-                    "",
-                    "0.0",
-                    "",
-                    "",
-                    "0.0",
-                    "0.0",
-                    ""))
+                mutableStateOf(
+                    WeatherModel(
+                        "",
+                        "",
+                        "0.0",
+                        "",
+                        "",
+                        "0.0",
+                        "0.0",
+                        ""
+                    )
+                )
             }
-            getData("London", this, daysList, currentDay)
+            getData("Moscow", this, daysList, currentDay)
             Image(
                 painter = painterResource(id = R.drawable.mks),
                 contentDescription = "im1",
@@ -53,7 +57,7 @@ class MainActivity : ComponentActivity() {
             )
             Column {
                 MainCard(currentDay)
-                TabLayout(daysList)
+                TabLayout(daysList, currentDay)
             }
         }
     }
