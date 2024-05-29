@@ -1,6 +1,7 @@
 package com.example.myapplication.screen
 
 
+import android.app.AlertDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,11 +13,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -74,7 +80,39 @@ fun ItemView(item: WeatherModel, currentDay: MutableState<WeatherModel>) {
                 model = "https:${item.icon}",
                 contentDescription = "im5",
                 modifier = Modifier.size(35.dp)
-            ) // coil library
+            )
         }
     }
+}
+
+@Composable
+fun DialogSearch(dialogState: MutableState<Boolean>, onSubmit:(String)->Unit) {
+    val textState = remember {
+        mutableStateOf("")
+    }
+    AlertDialog(onDismissRequest = { dialogState.value = false },
+        confirmButton = {
+            TextButton(onClick = {
+                onSubmit.invoke(textState.value)
+                dialogState.value = false
+            }) {
+                Text(text = "OK")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = {
+                dialogState.value = false
+            }) {
+                Text(text = "Cancel")
+            }
+        },
+        title = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text(text = "Введите название города")
+                TextField(value = textState.value, onValueChange = {
+                    textState.value = it
+                })
+            }
+        }
+    )
 }
