@@ -11,6 +11,7 @@ composeBom = "2023.08.00"
 volleyVersion = "1.2.1"
 coilVersion = "2.0.0-rc01"
 accompanistVersion = "0.23.0"
+androidxNavigation = "2.6.0-alpha04"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +32,7 @@ androidx-volley = { group = "com.android.volley", name = "volley", version.ref =
 androidx-coil = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilVersion" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistVersion" }
 accompanist-pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanistVersion" }
+navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "androidxNavigation"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
