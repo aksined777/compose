@@ -21,7 +21,21 @@ fun NavGraph(
             Screen3()
         }
         composable(BottonItem.Screen4.route) {
-            Screen4()
+            Screen4({
+                navHostController.navigate("Screen_5")
+            })
+        }
+        composable("Screen_5" ){
+            Screen5({
+                navHostController.navigate("Screen_6")
+            })
+        }
+        composable("Screen_6" ){
+            Screen6({
+                navHostController.navigate(BottonItem.Screen4.route) {
+                    popUpTo(BottonItem.Screen4.route)
+                }
+            })
         }
     }
 }

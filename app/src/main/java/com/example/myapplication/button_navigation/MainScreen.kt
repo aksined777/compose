@@ -49,7 +49,11 @@ fun MainScreen(context: Context) {
                 },
                 backgroundColor = Color.Red,
                 navigationIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        coroutineScope.launch {
+                            scaffoldState.drawerState.open()
+                        }
+                    }) {
                         Icon(imageVector = Icons.Filled.Menu, contentDescription = "Nenu")
                     }
                 },
@@ -78,6 +82,10 @@ fun MainScreen(context: Context) {
         bottomBar = {
             BottonNavigation(navController = navController)
 
+        },
+        drawerContent = {
+            DrawerHeader()
+            DrawerBody()
         }
     ) {
         NavGraph(navHostController = navController)
